@@ -2,12 +2,16 @@
   <div>
     <h1>代辦清單</h1>
     <ToDoForm @add-todo="addTodo" />
+    <div class="todo-status">
+      已完成 {{ completedCount }} / 全部 {{ totalCount }} 項
+    </div>
     <TodoItem
       v-for="item in ToDoItems"
       :key="item.id"
       :id="item.id"
       :label="item.label"
       :done="item.done"
+      @change="updateTodoStatus"
     />
   </div>
 </template>
@@ -33,6 +37,14 @@ export default {
       ]
     };
   },
+  computed: {
+    completedCount() {
+      return this.ToDoItems.filter(item => item.done).length;
+    },
+    totalCount() {
+      return this.ToDoItems.length;
+    }
+  },
   methods: {
     addTodo(label) {
       this.ToDoItems.push({
@@ -40,6 +52,10 @@ export default {
         label,
         done: false
       });
+    },
+    updateTodoStatus({ id, done }) {
+      const item = this.ToDoItems.find(item => item.id === id);
+      if (item) item.done = done;
     }
   }
 };
