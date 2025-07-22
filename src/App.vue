@@ -3,7 +3,7 @@
     <h1>代辦清單</h1>
     <ToDoForm @add-todo="addTodo" />
     <div class="todo-status">
-      已完成 {{ completedCount }} / 全部 {{ totalCount }} 項
+      已完成 {{ completedCount }} 項 / 全部 {{ totalCount }} 項
     </div>
     <TodoItem
       v-for="item in ToDoItems"
