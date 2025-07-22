@@ -1,6 +1,7 @@
 <template>
   <div>
     <h1>代辦清單</h1>
+    <ToDoForm @add-todo="addTodo" />
     <TodoItem
       v-for="item in ToDoItems"
       :key="item.id"
@@ -14,11 +15,13 @@
 <script>
 import { nanoid } from 'nanoid';
 import TodoItem from './components/TodoItem.vue';
+import ToDoForm from './components/ToDoForm.vue';
 
 export default {
   name: 'App',
   components: {
-    TodoItem
+    TodoItem,
+    ToDoForm
   },
   data() {
     return {
@@ -29,6 +32,15 @@ export default {
         { id: 'todo-' + nanoid(), label: '閱讀10頁', done: false }
       ]
     };
+  },
+  methods: {
+    addTodo(label) {
+      this.ToDoItems.push({
+        id: 'todo-' + nanoid(),
+        label,
+        done: false
+      });
+    }
   }
 };
 </script>
