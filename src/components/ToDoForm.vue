@@ -1,7 +1,7 @@
 <template>
-  <form @submit.prevent="onSubmit">
-    <label for="todo-input">新增代辦事項：</label>
-    <input id="todo-input" v-model.lazy.trim="label" required/>
+  <form @submit.prevent="handleAdd">
+    <label for="todo-input">待辦事項：</label>
+    <input id="todo-input" v-model.lazy.trim="inputValue" type="text" />
     <button type="submit">新增</button>
   </form>
 </template>
@@ -11,29 +11,17 @@ export default {
   name: 'ToDoForm',
   data() {
     return {
-      label: ''
-    };
+      inputValue: ''
+    }
   },
   methods: {
-    onSubmit() {
-      if (this.label.trim() === '') return;
-      this.$emit('add-todo', this.label);
-      this.label = '';
+    handleAdd() {
+      if (this.inputValue) {
+        this.$emit('資料新增', this.inputValue)
+        this.inputValue = ''
+      }
     }
   }
-};
+}
 </script>
 
-<style scoped>
-form {
-  margin-bottom: 1em;
-}
-
-label {
-  margin-right: 0.5em;
-}
-
-input {
-  margin-right: 0.5em;
-}
-</style>

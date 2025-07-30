@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>代辦清單</h1>
-    <ToDoForm @add-todo="addTodo" />
+    <ToDoForm @資料新增="addTodo" />
     <div class="todo-status">
       已完成 {{ completedCount }} 項 / 全部 {{ totalCount }} 項
     </div>
@@ -11,7 +11,10 @@
       :id="item.id"
       :label="item.label"
       :done="item.done"
-      @change="updateTodoStatus"
+      @資料改變="updateTodoStatus"
+      @清單完成編輯="finishEditTodo"
+      @清單編輯="editTodo"
+      @清單刪除="deleteTodo"
     />
   </div>
 </template>
@@ -51,11 +54,21 @@ export default {
         id: 'todo-' + nanoid(),
         label,
         done: false
-      });
+      })
     },
-    updateTodoStatus({ id, done }) {
-      const item = this.ToDoItems.find(item => item.id === id);
-      if (item) item.done = done;
+    updateTodoStatus(id) {
+      const item = this.ToDoItems.find(i => i.id === id)
+      if (item) item.done = !item.done
+    },
+    editTodo({ id, label }) {
+      const item = this.ToDoItems.find(i => i.id === id)
+      if (item) item.label = label
+    },
+    finishEditTodo(id) {
+      // 可根據需求擴充，暫不需額外處理
+    },
+    deleteTodo(id) {
+      this.ToDoItems = this.ToDoItems.filter(i => i.id !== id)
     }
   }
 };

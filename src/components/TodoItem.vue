@@ -1,18 +1,23 @@
 <template>
-  <div>
-    <input
-      type="checkbox"
-      :id="id"
-      :checked="isDone"
-      @change="onCheckboxChange"
-    />
+  <div v-if="!isEditing">
+    <input type="checkbox" :id="id" :checked="isDone" @change="handleCheckboxChange" />
     <label :for="id">{{ label }}</label>
+    <button @click="isEditing = true">編輯</button>
+    <button @click="handleDelete">刪除</button>
   </div>
+  <ToDoItemEditForm
+    v-else
+    :value="label"
+    @清單編輯="handleEdit"
+    @取消編輯="handleCancelEdit"
+  />
 </template>
 
 <script>
+import ToDoItemEditForm from './ToDoItemEditForm.vue'
 export default {
   name: 'TodoItem',
+  components: { ToDoItemEditForm },
   props: {
     label: {
       type: String,
@@ -20,7 +25,7 @@ export default {
     },
     done: {
       type: Boolean,
-      default: false
+      required: true
     },
     id: {
       type: String,
@@ -29,14 +34,25 @@ export default {
   },
   data() {
     return {
-      isDone: this.done
-    };
+      isDone: this.done,
+      isEditing: false
+    }
   },
   methods: {
-    onCheckboxChange(event) {
-      this.isDone = event.target.checked;
-      this.$emit('change', { id: this.id, done: this.isDone });
+    handleCheckboxChange() {
+      this.isDone = !this.isDone
+      this.$emit('checkbox變更', this.id)
+    },
+    handleDelete() {
+      this.$emit('清單刪除', this.id)
+    },
+    handleEdit(newLabel) {
+      this.$emit('清單編輯', { id: this.id, label: newLabel })
+      this.isEditing = false
+    },
+    handleCancelEdit() {
+      this.isEditing = false
     }
   }
-};
+}
 </script>
