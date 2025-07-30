@@ -1,15 +1,15 @@
 <template>
   <div v-if="!isEditing">
-    <input type="checkbox" :id="id" :checked="isDone" @change="handleCheckboxChange" />
+    <input type="checkbox" :id="id" :checked="isDone" @change="handleToggle" />
     <label :for="id">{{ label }}</label>
-    <button @click="isEditing = true">編輯</button>
-    <button @click="handleDelete">刪除</button>
+    <button class="pure-button button-success" @click="isEditing = true">編輯</button>
+    <button class="pure-button button-error" @click="handleDelete">刪除</button>
   </div>
   <ToDoItemEditForm
     v-else
     :value="label"
-    @清單編輯="handleEdit"
-    @取消編輯="handleCancelEdit"
+    @edit-todo="handleEdit"
+    @cancel-edit="handleCancelEdit"
   />
 </template>
 
@@ -39,15 +39,15 @@ export default {
     }
   },
   methods: {
-    handleCheckboxChange() {
+    handleToggle() {
       this.isDone = !this.isDone
-      this.$emit('checkbox變更', this.id)
+      this.$emit('toggle-todo', this.id)
     },
     handleDelete() {
-      this.$emit('清單刪除', this.id)
+      this.$emit('delete-todo', this.id)
     },
     handleEdit(newLabel) {
-      this.$emit('清單編輯', { id: this.id, label: newLabel })
+      this.$emit('edit-todo', { id: this.id, label: newLabel })
       this.isEditing = false
     },
     handleCancelEdit() {

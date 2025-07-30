@@ -22,12 +22,11 @@ export default {
   },
   methods: {
     handleSave() {
-      this.$emit('清單編輯', this.editValue)
+      this.$emit('edit-todo', this.editValue)
     },
     handleCancel() {
-      this.$emit('取消編輯')
+      this.$emit('cancel-edit')
     }
   }
 }
 </script>
-
